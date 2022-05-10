@@ -107,7 +107,6 @@ void	my_rainbow(t_data *data, int width, int high)
 	int		color;
 	int		R, G, B;
 
-	color = 0;
 	y = -1;
 	while (++y < high)
 	{
@@ -121,8 +120,8 @@ void	my_rainbow(t_data *data, int width, int high)
 		while (++x < width)
 		{
 			dst = data->addr + (y * data->line_length + x * (data->bits_per_pixel / 8));
-			/**(unsigned int*)dst = color;*/
-			*(unsigned int*)dst = 0;
+			*(unsigned int*)dst = color;
+			*(unsigned int*)dst = 0; // Black
 		}
 	}
 }
