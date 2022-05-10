@@ -6,11 +6,12 @@
 /*   By: jarredon <jarredon@student.42malaga>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 22:41:11 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/10 23:21:32 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/05/11 00:17:07 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
+#include <stdio.h>
 
 #define HEIGHT 800
 #define WIDTH 800
@@ -117,19 +118,26 @@ int	mouse(int button, int x, int y, void *param)
 	t_pixel	p;
 
 	vars = (t_vars *)param;
-	p.x = x;
-	p.y = y;
+	p = (t_pixel){x, y};
 	if (button == 4)
 	{
 		vars->midpoint = pixel_to_complex(vars, p);
 		vars->range *= 0.5;
+		vars->max_iter *= 1.05;
+		if (vars->max_iter > 300)
+			vars->max_iter = 300;
 	}
 	else if (button == 5)
 	{
 		vars->midpoint = pixel_to_complex(vars, p);
 		vars->range *= 1.5;
+		vars->max_iter *= 0.95;
+		if (vars->max_iter < 50)
+			vars->max_iter = 50;
 	}
 	plot_mandel(vars);
+	printf("range: %.16lf, max_iter: %d, midpoint: %.16lf, %.16lf\n",
+		vars->range, vars->max_iter, vars->midpoint.x, vars->midpoint.y);
 	mlx_put_image_to_window(vars->mlx, vars->mlx_win, vars->img.img, 0, 0);
 	return (0);
 }
@@ -140,7 +148,7 @@ int	main(void)
 
 	vars.width = WIDTH;
 	vars.height = HEIGHT;
-	vars.max_iter = 100;
+	vars.max_iter = 50;
 	vars.range = 2.5;
 	vars.midpoint.x = 0;
 	vars.midpoint.y = 0;
