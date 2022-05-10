@@ -6,7 +6,7 @@
 /*   By: jarredon <jarredon@student.42malaga>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 22:41:11 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/10 22:45:09 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/05/10 23:21:32 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,6 +111,29 @@ void	plot_mandel(t_vars *vars)
 	}
 }
 
+int	mouse(int button, int x, int y, void *param)
+{
+	t_vars	*vars;
+	t_pixel	p;
+
+	vars = (t_vars *)param;
+	p.x = x;
+	p.y = y;
+	if (button == 4)
+	{
+		vars->midpoint = pixel_to_complex(vars, p);
+		vars->range *= 0.5;
+	}
+	else if (button == 5)
+	{
+		vars->midpoint = pixel_to_complex(vars, p);
+		vars->range *= 1.5;
+	}
+	plot_mandel(vars);
+	mlx_put_image_to_window(vars->mlx, vars->mlx_win, vars->img.img, 0, 0);
+	return (0);
+}
+
 int	main(void)
 {
 	t_vars	vars;
@@ -128,7 +151,6 @@ int	main(void)
 			&vars.img.bits_per_pixel, &vars.img.line_length, &vars.img.endian);
 	plot_mandel(&vars);
 	mlx_put_image_to_window(vars.mlx, vars.mlx_win, vars.img.img, 0, 0);
-	/*mlx_hook(vars.mlx_win, 2, 1L<<0, func, &vars);*/
-	/*mlx_mouse_hook(vars.mlx_win, mouse, &vars);*/
+	mlx_mouse_hook(vars.mlx_win, mouse, &vars);
 	mlx_loop(vars.mlx);
 }
