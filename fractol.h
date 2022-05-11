@@ -6,7 +6,7 @@
 /*   By: jarredon <jarredon@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 11:48:27 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/11 16:31:59 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:42:41 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,16 @@
 # define RIGHT 124
 # define DOWN 125
 # define UP 126
+# define K1 18
+# define K2 19
+# define K3 20
+# define K4 21
+# define K5 23
+# define K6 22
+# define K7 26
+# define K8 28
+# define K9 25
+# define K0 29
 
 typedef struct s_complex
 {
@@ -57,6 +67,7 @@ typedef struct s_vars
 	t_complex	midpoint;
 	int			(*fractal)(t_complex, int, void *);
 	t_complex	c_julia;
+	int			palette;
 }	t_vars;
 
 // Fractals

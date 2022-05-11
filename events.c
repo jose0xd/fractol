@@ -6,7 +6,7 @@
 /*   By: jarredon <jarredon@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 11:49:15 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/11 16:31:07 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/05/11 17:47:39 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,12 @@ static void	extra_keys(int key, t_vars *vars)
 		vars->midpoint.x = -1;
 		vars->midpoint.y = 0;
 	}
+	else if (key == K1)
+		vars->palette = 1;
+	else if (key == K2)
+		vars->palette = 2;
+	else if (key == K0)
+		vars->palette = 0;
 }
 
 int	keys(int key, void *param)

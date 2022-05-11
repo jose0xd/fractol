@@ -1,18 +1,19 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   mandel.c                                           :+:      :+:    :+:   */
+/*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: jarredon <jarredon@student.42malaga>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 22:41:11 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/11 16:30:29 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/05/11 18:01:44 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include <mlx.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <math.h>
 #include "fractol.h"
 
 t_complex	pixel_to_complex(t_vars *vars, t_pixel p)
@@ -24,6 +25,33 @@ t_complex	pixel_to_complex(t_vars *vars, t_pixel p)
 	c.y = vars->midpoint.y
 		+ 2 * vars->range * (p.y / (double)vars->height - 0.5);
 	return (c);
+}
+
+int	get_color(int iter, int palette)
+{
+	int			r;
+	int			g;
+	int			b;
+	static int	map[][3] = {{66, 30, 15}, {25, 7, 26}, {9, 1, 47}, {4, 4, 73},
+	{0, 7, 100}, {12, 44, 138}, {24, 82, 177}, {57, 125, 209},
+	{134, 181, 229}, {211, 236, 248}, {241, 233, 191}, {248, 201, 95},
+	{255, 170, 0}, {204, 128, 0}, {153, 87, 0}, {106, 52, 3}};
+
+	if (palette == 1)
+	{
+		r = sin(5 * iter + 0) * 127 + 128;
+		g = sin(5 * iter + 2) * 127 + 128;
+		b = sin(5 * iter + 4) * 127 + 128;
+	}
+	else if (palette == 2)
+	{
+		r = map[iter % 16][0];
+		g = map[iter % 16][1];
+		b = map[iter % 16][2];
+	}
+	else
+		return (0x80ff80 + iter * 10);
+	return (r << 16 | g << 8 | b);
 }
 
 void	plot_fractal(t_vars *vars)
@@ -43,7 +71,7 @@ void	plot_fractal(t_vars *vars)
 			c = pixel_to_complex(vars, p);
 			iter = vars->fractal(c, vars->max_iter, &vars->c_julia);
 			if (iter)
-				color = 0x80ff80 + iter * 10;
+				color = get_color(iter, vars->palette);
 			else
 				color = 0;
 			dst = vars->img.addr + (p.y * vars->img.line_length
@@ -55,9 +83,10 @@ void	plot_fractal(t_vars *vars)
 
 void	parse_args(int ac, char **av, t_vars *vars)
 {
-	if (ac == 1)
+	if (ac == 1 || (av[1][0] != '1' && av[1][0] != '2' && av[1][0] != '3'))
 	{
-		puts("Usage: fractol fractal-num\n\t1, 2 or 3");
+		puts("Usage: fractol <fractal-num> [c.x c.y]");
+		puts("\t1: Mandelbrot, 2: Julia [complex number] or 3: Burningship");
 		exit(0);
 	}
 	if (av[1][0] == '1')
@@ -89,6 +118,7 @@ int	main(int ac, char **av)
 	vars.height = HEIGHT;
 	vars.max_iter = 100;
 	vars.range = 2.5;
+	vars.palette = 0;
 	vars.mlx = mlx_init();
 	vars.mlx_win = mlx_new_window(vars.mlx, vars.width, vars.height, "Fractol");
 	vars.img.img = mlx_new_image(vars.mlx, vars.width, vars.height);
