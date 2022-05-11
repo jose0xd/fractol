@@ -12,7 +12,7 @@ else
 	FRW = -framework OpenGL -framework Appkit
 endif
 
-OBJ = mandel.o
+OBJ = mandel.o events.o
 
 NAME = mandel
 
