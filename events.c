@@ -6,7 +6,7 @@
 /*   By: jarredon <jarredon@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 11:49:15 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/11 11:50:19 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/05/11 16:31:07 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ int	mouse(int button, int x, int y, void *param)
 		if (vars->max_iter < 100)
 			vars->max_iter = 100;
 	}
-	plot_mandel(vars);
+	plot_fractal(vars);
 	printf("range: %.16lf, max_iter: %d, midpoint: %.16lf, %.16lf\n",
 		vars->range, vars->max_iter, vars->midpoint.x, vars->midpoint.y);
 	mlx_put_image_to_window(vars->mlx, vars->mlx_win, vars->img.img, 0, 0);
@@ -75,7 +75,13 @@ int	keys(int key, void *param)
 		exit(0);
 	else
 		extra_keys(key, vars);
-	plot_mandel(vars);
+	plot_fractal(vars);
 	mlx_put_image_to_window(vars->mlx, vars->mlx_win, vars->img.img, 0, 0);
 	return (0);
+}
+
+int	destroy(void *param)
+{
+	(void)param;
+	exit(0);
 }

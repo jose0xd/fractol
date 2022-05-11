@@ -6,7 +6,7 @@
 /*   By: jarredon <jarredon@student.42malaga.com>   +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/11 11:48:27 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/11 11:48:28 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/05/11 16:31:59 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,12 +55,24 @@ typedef struct s_vars
 	int			max_iter;
 	double		range;
 	t_complex	midpoint;
+	int			(*fractal)(t_complex, int, void *);
+	t_complex	c_julia;
 }	t_vars;
 
+// Fractals
+int			mandelbrot(t_complex c, int max_iter, void *args);
+int			julia(t_complex z, int max_iter, void *args);
+int			burningship(t_complex c, int max_iter, void *args);
+
+// Events
 int			mouse(int button, int x, int y, void *param);
 int			keys(int key, void *param);
+int			destroy(void *param);
 
 t_complex	pixel_to_complex(t_vars *vars, t_pixel p);
-void		plot_mandel(t_vars *vars);
+void		plot_fractal(t_vars *vars);
+
+// Utils
+double		ft_atof(char *str);
 
 #endif

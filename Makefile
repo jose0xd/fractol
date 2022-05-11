@@ -12,12 +12,23 @@ else
 	FRW = -framework OpenGL -framework Appkit
 endif
 
-OBJ = mandel.o events.o
+OBJ = main.o events.o fractals.o utils.o
 
-NAME = mandel
+NAME = fractol
 
 %.o: %.c
 	$(CC) $(CFLAGS) -I$(INC) -c $< -o $@
 
 $(NAME): $(OBJ)
 	$(CC) $(OBJ) $(LIB) $(FRW) -o $(NAME)
+
+clean:
+	@rm -f $(OBJ)
+
+fclean: clean
+	@rm -f $(NAME)
+
+re: fclean
+	$(MAKE)
+
+.PHONY: clean fclean re
