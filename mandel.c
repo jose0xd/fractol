@@ -6,7 +6,7 @@
 /*   By: jarredon <jarredon@student.42malaga>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 22:41:11 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/11 11:48:56 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/05/11 12:20:26 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,23 +27,78 @@ t_complex	pixel_to_complex(t_vars *vars, t_pixel p)
 
 static int	mandelbrot(t_complex c, int max_iter)
 {
-	double	zx;
-	double	zy;
-	double	zx2;
-	double	zy2;
-	int		i;
+	t_complex	z;
+	t_complex	z2;
+	int			i;
 
-	zx = 0;
-	zy = 0;
-	zx2 = 0;
-	zy2 = 0;
+	z.x = 0;
+	z.y = 0;
+	z2.x = 0;
+	z2.y = 0;
 	i = 0;
-	while (i < max_iter && zx2 + zy2 < 4)
+	while (i < max_iter && z2.x + z2.y < 4)
 	{
-		zy = 2 * zx * zy + c.y;
-		zx = zx2 - zy2 + c.x;
-		zx2 = zx * zx;
-		zy2 = zy * zy;
+		z.y = 2 * z.x * z.y + c.y;
+		z.x = z2.x - z2.y + c.x;
+		z2.x = z.x * z.x;
+		z2.y = z.y * z.y;
+		i++;
+	}
+	if (i == max_iter)
+		return (0);
+	return (i);
+}
+
+/*t_complex g_c = { 0.285, 0.01 };*/
+t_complex g_c = { -0.4, 0.6 };
+/*t_complex g_c = { -0.835, -0.2321 };*/
+/*t_complex g_c = { −0.7269 + 0.1889 };*/
+
+static int	julia(t_complex z, t_complex c, int max_iter)
+{
+	t_complex	z2;
+	int			i;
+
+	z2.x = z.x * z.x;
+	z2.y = z.y * z.y;
+	i = 0;
+	while (i < max_iter && z2.x + z2.y < 4)
+	{
+		z.y = 2 * z.x * z.y + c.y;
+		z.x = z2.x - z2.y + c.x;
+		z2.x = z.x * z.x;
+		z2.y = z.y * z.y;
+		i++;
+	}
+	if (i == max_iter)
+		return (0);
+	return (i);
+}
+
+double	absolut(double n)
+{
+	if (n < 0)
+		return (-n);
+	return (n);
+}
+
+static int	burningship(t_complex c, int max_iter)
+{
+	t_complex	z;
+	t_complex	z2;
+	int			i;
+
+	z.x = 0;
+	z.y = 0;
+	z2.x = 0;
+	z2.y = 0;
+	i = 0;
+	while (i < max_iter && z2.x + z2.y < 4)
+	{
+		z.y = 2 * absolut(z.x * z.y) + c.y;
+		z.x = z2.x - z2.y + c.x;
+		z2.x = z.x * z.x;
+		z2.y = z.y * z.y;
 		i++;
 	}
 	if (i == max_iter)
@@ -66,7 +121,12 @@ void	plot_mandel(t_vars *vars)
 		while (++p.x < vars->width)
 		{
 			c = pixel_to_complex(vars, p);
-			iter = mandelbrot(c, vars->max_iter);
+			/*iter = mandelbrot(c, vars->max_iter);*/
+			(void)mandelbrot;
+			iter = julia(c, g_c, vars->max_iter);
+			/*(void)julia;*/
+			/*iter = burningship(c, vars->max_iter);*/
+			(void)burningship;
 			if (iter)
 				color = 0x80ff80 + iter * 10;
 			else
