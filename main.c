@@ -6,7 +6,7 @@
 /*   By: jarredon <jarredon@student.42malaga>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/05/10 22:41:11 by jarredon          #+#    #+#             */
-/*   Updated: 2022/05/11 18:01:44 by jarredon         ###   ########.fr       */
+/*   Updated: 2022/06/14 18:18:58 by jarredon         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,8 +85,9 @@ void	parse_args(int ac, char **av, t_vars *vars)
 {
 	if (ac == 1 || (av[1][0] != '1' && av[1][0] != '2' && av[1][0] != '3'))
 	{
-		puts("Usage: fractol <fractal-num> [c.x c.y]");
-		puts("\t1: Mandelbrot, 2: Julia [complex number] or 3: Burningship");
+		printf("Usage: fractol <fractal-num> [c.x c.y]\n");
+		printf("\t1: Mandelbrot, 2: Julia [complex number] "\
+			"or 3: Burningship\n");
 		exit(0);
 	}
 	if (av[1][0] == '1')
@@ -100,7 +101,7 @@ void	parse_args(int ac, char **av, t_vars *vars)
 		vars->fractal = julia;
 		vars->c_julia = (t_complex){-0.4, 0.6};
 		if (ac >= 4)
-			vars->c_julia = (t_complex){atof(av[2]), atof(av[3])};
+			vars->c_julia = (t_complex){ft_atof(av[2]), ft_atof(av[3])};
 	}
 	else if (av[1][0] == '3')
 	{
